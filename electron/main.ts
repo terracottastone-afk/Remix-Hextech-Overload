@@ -49,18 +49,19 @@ const agent = new https.Agent({ rejectUnauthorized: false });
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 400,
-    height: 650,
-    transparent: false, // Set to false temporarily to ensure it's visible during setup
-    frame: true,        // Add frame back so user can see the window title
+    width: 320,
+    height: 700,
+    transparent: true,
+    frame: false,
     alwaysOnTop: true,
-    // skipTaskbar: true, // Disable for now so user can find it in taskbar
+    skipTaskbar: true,
+    resizable: false,
     webPreferences: {
       preload: path.resolve(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
       sandbox: false,
-      webSecurity: false, // Help with local file access if needed
+      webSecurity: false,
     },
   });
 

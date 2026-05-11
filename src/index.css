@@ -3,6 +3,24 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --animate-pulse-slow: pulse-slow 4s infinite ease-in-out;
+
+  @keyframes pulse-slow {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% { opacity: 0.3; }
+  }
+
+  @keyframes scan-line {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  @keyframes bubble {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
 }
 
 @layer base {
@@ -21,8 +39,13 @@
 
 /* Hextech Anchor */
 .hextech-anchor {
-  @apply w-12 h-12 rounded-full border-2 border-[#c8aa6e] bg-[#010a13] flex items-center justify-center shadow-[0_0_15px_rgba(200,170,110,0.4)] cursor-grab active:cursor-grabbing;
+  @apply w-12 h-12 rounded-full border-2 border-[#c8aa6e] bg-[#010a13] flex items-center justify-center shadow-[0_0_20px_rgba(200,170,110,0.5)] cursor-grab active:cursor-grabbing relative overflow-hidden;
   -webkit-app-region: drag;
+}
+
+.hextech-anchor::after {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-tr from-[#c8aa6e]/0 via-[#c8aa6e]/20 to-[#c8aa6e]/0 animate-pulse-slow;
 }
 
 /* Theme: Divine (Kayle) */
@@ -30,13 +53,14 @@
   --theme-primary: #C89B3C;
   --theme-secondary: #FFFFFF;
   --theme-accent: #F9A7C0;
-  --theme-bg: rgba(10, 20, 40, 0.9);
+  --theme-bg: rgba(2, 10, 20, 0.95);
 }
 
 .divine-border {
   border: 1px solid transparent;
   background: linear-gradient(var(--theme-bg), var(--theme-bg)) padding-box,
-              linear-gradient(to bottom, #C89B3C, #F9A7C0) border-box;
+              linear-gradient(135deg, #C89B3C 0%, #F9A7C0 50%, #C89B3C 100%) border-box;
+  box-shadow: 0 0 30px rgba(200, 155, 60, 0.2);
 }
 
 /* Theme: Cosmic (ASol) */
@@ -44,13 +68,14 @@
   --theme-primary: #914FBF;
   --theme-secondary: #60F5EE;
   --theme-accent: #0A1428;
-  --theme-bg: rgba(10, 20, 40, 0.9);
+  --theme-bg: rgba(2, 6, 15, 0.95);
 }
 
 .cosmic-border {
   border: 1px solid transparent;
   background: linear-gradient(var(--theme-bg), var(--theme-bg)) padding-box,
-              linear-gradient(to bottom, #914FBF, #60F5EE) border-box;
+              linear-gradient(135deg, #914FBF 0%, #60F5EE 50%, #914FBF 100%) border-box;
+  box-shadow: 0 0 30px rgba(145, 79, 191, 0.2);
 }
 
 .star-field {
@@ -69,37 +94,41 @@
   --theme-primary: #783F04;
   --theme-secondary: #B91001;
   --theme-accent: #B9B9B9;
-  --theme-bg: rgba(10, 20, 40, 0.9);
+  --theme-bg: rgba(12, 10, 5, 0.96);
 }
 
 .poison-border {
   border: 1px solid transparent;
   background: linear-gradient(var(--theme-bg), var(--theme-bg)) padding-box,
-              linear-gradient(to bottom, #783F04, #B91001) border-box;
+              linear-gradient(135deg, #783F04 0%, #B91001 50%, #783F04 100%) border-box;
+  box-shadow: 0 0 30px rgba(120, 63, 4, 0.2);
 }
 
 .bubble-glow {
-  box-shadow: inset 0 0 15px rgba(120, 63, 4, 0.4);
-  animation: bubble 4s infinite ease-in-out;
-}
-
-@keyframes bubble {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.7; }
+  background: radial-gradient(circle at 50% 50%, rgba(120, 63, 4, 0.15) 0%, transparent 70%);
+  @apply animate-[bubble_4s_infinite_ease-in-out];
 }
 
 .advice-container {
-  background-color: rgba(10, 20, 40, 0.85); /* Semi-transparent dark navy (#0A1428) */
-  @apply backdrop-blur-md rounded-md p-3 border border-[#c8aa6e]/20 transition-all duration-500;
-  animation: advice-pulse 3s infinite ease-in-out;
+  background-color: rgba(1, 10, 19, 0.7); 
+  @apply backdrop-blur-xl rounded-sm p-3 border border-[#c8aa6e]/10 transition-all duration-500 relative overflow-hidden;
+}
+
+.advice-container::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-[#c8aa6e]/5 to-transparent -translate-x-full animate-[scan-line_3s_infinite_linear];
 }
 
 @keyframes advice-pulse {
-  0%, 100% { box-shadow: 0 0 5px rgba(200, 170, 110, 0.1); border-color: rgba(200, 170, 110, 0.1); }
-  50% { box-shadow: 0 0 15px rgba(200, 170, 110, 0.3); border-color: rgba(200, 170, 110, 0.4); }
+  0%, 100% { box-shadow: 0 0 10px rgba(200, 170, 110, 0.05); }
+  50% { box-shadow: 0 0 20px rgba(200, 170, 110, 0.15); }
 }
 
 .hextech-glow {
-  box-shadow: 0 0 30px rgba(1, 10, 19, 0.8), inset 0 0 1px rgba(200, 170, 110, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(200, 170, 110, 0.3);
+}
+
+.rune-icon-glow {
+  filter: drop-shadow(0 0 4px rgba(200, 170, 110, 0.6));
 }
 

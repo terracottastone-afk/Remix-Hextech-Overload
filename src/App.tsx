@@ -288,30 +288,38 @@ export default function App() {
       {/* Hextech Anchor (Drag Handle) */}
       <div className="flex flex-col items-end gap-1">
         {window.electronAPI?.ping?.() === 'pong-v5' ? (
-          <span className="text-[9px] text-[#00ffcc] font-mono tracking-widest bg-[#00ffcc]/10 px-2 rounded-sm border border-[#00ffcc]/20">DESKTOP LINK ACTIVE</span>
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-2 px-2 py-0.5 bg-[#00ffcc]/5 border border-[#00ffcc]/20 rounded-sm"
+          >
+            <div className="w-1 h-1 bg-[#00ffcc] rounded-full animate-ping" />
+            <span className="text-[8px] text-[#00ffcc] font-mono tracking-tighter uppercase font-bold">Engine Link Stable</span>
+          </motion.div>
         ) : (
           <div className="flex flex-col items-end gap-1">
-            <span className="text-[9px] text-[#ff4444] font-mono tracking-widest bg-[#ff4444]/10 px-2 rounded-sm border border-[#ff4444]/20 animate-pulse">BRIDGE ERROR (NO LINK)</span>
+            <span className="text-[9px] text-[#ff4444] font-mono tracking-widest bg-[#ff4444]/10 px-2 rounded-sm border border-[#ff4444]/20 animate-pulse uppercase">Bridge Disconnected</span>
             <div className="flex gap-2">
-              <span className="text-[8px] text-white/20">Status: {typeof window.electronAPI === 'undefined' ? 'OBJECT MISSING' : `VERSION MISMATCH (${String(window.electronAPI.ping?.()) || 'NO PING'})`}</span>
+              <span className="text-[8px] text-white/20">Status: {typeof window.electronAPI === 'undefined' ? 'OBJECT MISSING' : `LINK_ERROR`}</span>
               <button 
                 onClick={() => window.location.reload()}
                 className="text-[8px] text-white/40 hover:text-white underline cursor-pointer"
               >
-                Retry
+                Reconnect
               </button>
             </div>
           </div>
         )}
         <div 
-          className="hextech-anchor pointer-events-auto shadow-[0_0_20px_rgba(200,170,110,0.6)] cursor-move group relative z-50 mt-1"
+          className="hextech-anchor pointer-events-auto mt-1"
           style={{ WebkitAppRegion: 'drag' } as any}
           onMouseEnter={() => toggleClickThrough(false)}
           onMouseLeave={() => toggleClickThrough(false)}
         >
-          <div className="w-9 h-9 rounded-full border-2 border-[#c8aa6e]/40 flex items-center justify-center animate-pulse group-hover:scale-110 transition-transform bg-[#010a13]">
-            <Zap className="w-5 h-5 text-[#c8aa6e]" />
+          <div className="w-9 h-9 rounded-full border border-[#c8aa6e]/60 flex items-center justify-center group-hover:scale-105 transition-transform bg-[#010a13] z-10 relative">
+            <Zap className="w-4 h-4 text-[#c8aa6e] drop-shadow-[0_0_3px_#c8aa6e]" />
           </div>
+          <div className="absolute inset-0 bg-[#c8aa6e]/10 animate-ping opacity-20" />
         </div>
       </div>
 
@@ -335,59 +343,68 @@ export default function App() {
             {activeChampId === 17 && <div className="absolute inset-0 bubble-glow pointer-events-none" />}
 
             {/* Header */}
-            <div className="px-3 py-2 bg-[#091428]/90 border-b border-[#c8aa6e]/20 flex items-center justify-between relative z-10">
+            <div className="px-3 py-2 bg-[#091428]/95 border-b border-[#c8aa6e]/20 flex items-center justify-between relative z-10">
               <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-[#c8aa6e] rotate-45 shadow-[0_0_5px_#c8aa6e]" />
-                <span className="text-[10px] font-bold text-[#c8aa6e] uppercase tracking-[0.2em]">Werner Elite</span>
+                <div className="w-2 h-2 bg-[#c8aa6e] rotate-45 shadow-[0_0_8px_#c8aa6e]" />
+                <span className="text-[10px] font-black text-[#c8aa6e] uppercase tracking-[0.25em]">Hextech Elite v5</span>
               </div>
               <div className="flex gap-2 text-[#c8aa6e]/40">
-                <button onClick={() => setSimulation(!simulation)} className={cn("transition-colors", simulation && "text-[#008f91]")}>
+                <button onClick={() => setSimulation(!simulation)} className={cn("transition-colors hover:text-[#c8aa6e]", simulation && "text-[#008f91]")}>
                   <Cpu className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
 
             {/* Content Area */}
-            <div className="p-4 relative z-10">
-              <div className="flex justify-between items-end mb-4">
+            <div className="p-4 relative z-10 overflow-hidden">
+               <div className="absolute top-0 right-0 w-24 h-24 bg-[#c8aa6e]/5 rounded-full -mr-12 -mt-12 blur-2xl pointer-events-none" />
+              
+              <div className="flex justify-between items-end mb-5">
                 <div>
-                  <div className="text-[9px] uppercase text-[#c8aa6e]/60 font-bold tracking-widest">Specialist</div>
-                  <div className="text-lg font-bold text-[#f0e6d2] uppercase">{activeChamp}</div>
+                  <div className="text-[8px] uppercase text-[#c8aa6e]/60 font-bold tracking-[0.3em] mb-0.5">Tactical Analysis</div>
+                  <div className="text-xl font-black text-[#f0e6d2] uppercase tracking-tight leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">{activeChamp}</div>
                 </div>
-                <div className={cn(
-                  "px-2 py-0.5 rounded-sm border text-[9px] uppercase font-bold",
-                  phase === 'DRAFT' ? "border-[#008f91] text-[#008f91]" : 
-                  phase === 'GAME' ? "border-red-500 text-red-500" : "border-slate-800 text-slate-500"
-                )}>
+                <motion.div 
+                  initial={false}
+                  animate={{ scale: phase !== 'IDLE' ? [1, 1.05, 1] : 1 }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                  className={cn(
+                    "px-2.5 py-0.5 rounded-sm border text-[9px] uppercase font-black tracking-widest shadow-lg",
+                    phase === 'DRAFT' ? "border-[#008f91] bg-[#008f91]/10 text-[#008f91]" : 
+                    phase === 'GAME' ? "border-red-500/50 bg-red-500/10 text-red-400" : "border-white/10 bg-white/5 text-white/40"
+                  )}
+                >
                   {phase}
-                </div>
+                </motion.div>
               </div>
 
               <div className="space-y-4">
-                {/* Advice Section */}
+                  {/* Advice Section */}
                 <AnimatePresence mode="wait">
                   {runeAdvice && phase === 'DRAFT' && (
                     <motion.div 
                       key="runes"
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      className="advice-container border border-[#c8aa6e]/20"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 10 }}
+                      className="advice-container border-l-2 border-l-[#c8aa6e]"
                     >
-                      <div className="flex items-center gap-1.5 mb-2 text-[#c8aa6e]">
-                        <Zap className="w-3.5 h-3.5" />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">Strategic Tweak</span>
+                      <div className="flex items-center gap-2 mb-2 text-[#c8aa6e]">
+                        <div className="p-1 bg-[#c8aa6e]/10 rounded-full">
+                          <Zap className="w-3 h-3" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-[0.15em]">Strategic Tweak</span>
                       </div>
-                      <p className="text-[11px] text-[#f0e6d2] italic leading-tight mb-3">
+                      <p className="text-[11px] text-[#f0e6d2] italic leading-relaxed mb-4 px-1">
                         "{runeAdvice.reasoning}"
                       </p>
                       <button 
                         onClick={handleImport}
                         disabled={isImporting}
-                        className="w-full py-2 bg-[#c8aa6e]/10 hover:bg-[#c8aa6e]/20 border border-[#c8aa6e]/40 text-[#c8aa6e] text-[9px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                        className="w-full py-2.5 bg-[#c8aa6e]/5 hover:bg-[#c8aa6e]/15 border border-[#c8aa6e]/30 hover:border-[#c8aa6e]/60 text-[#c8aa6e] text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50"
                       >
-                        {isImporting ? <RefreshCw className="w-3 h-3 animate-spin" /> : <ChevronRight className="w-3 h-3" />}
-                        {isImporting ? 'Injecting...' : 'Equip Tweaks (F10)'}
+                        {isImporting ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Shield className="w-3.5 h-3.5" />}
+                        {isImporting ? 'Injecting...' : 'Equip Tweaks'}
                       </button>
                     </motion.div>
                   )}
@@ -395,22 +412,24 @@ export default function App() {
                   {itemAdvice && phase === 'GAME' && (
                     <motion.div 
                       key="items"
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      className="advice-container border border-[#008f91]/20"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 10 }}
+                      className="advice-container border-l-2 border-l-[#008f91]"
                     >
-                      <div className="flex items-center gap-1.5 mb-2 text-[#008f91]">
-                        <Sword className="w-3.5 h-3.5" />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">Tactical Build</span>
+                      <div className="flex items-center gap-2 mb-2 text-[#008f91]">
+                        <div className="p-1 bg-[#008f91]/10 rounded-full">
+                          <Sword className="w-3 h-3" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-[0.15em]">Tactical Pivot</span>
                       </div>
-                      <div className="text-xs font-bold text-[#f0e6d2] mb-1">{itemAdvice.itemName}</div>
-                      <p className="text-[11px] text-[#f0e6d2]/80 leading-tight italic mb-3">
+                      <div className="text-xs font-black text-[#f0e6d2] mb-1 px-1 bg-[#008f91]/5 py-1 rounded-sm border border-[#008f91]/10">{itemAdvice.itemName}</div>
+                      <p className="text-[11px] text-[#f0e6d2]/80 leading-relaxed italic mb-4 px-1">
                         "{itemAdvice.reasoning}"
                       </p>
-                      <div className="pt-2 border-t border-[#008f91]/20">
-                         <span className="text-[9px] font-bold text-emerald-400 uppercase block mb-1">Combat Goal</span>
-                         <p className="text-[10px] italic text-[#f0e6d2]/60 leading-tight">{itemAdvice.winCondition}</p>
+                      <div className="pt-3 border-t border-[#008f91]/10 px-1">
+                         <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest block mb-1">Execution Plan</span>
+                         <p className="text-[10px] italic text-[#f0e6d2]/70 leading-tight bg-black/20 p-2 rounded-sm border border-white/5">{itemAdvice.winCondition}</p>
                       </div>
                     </motion.div>
                   )}
