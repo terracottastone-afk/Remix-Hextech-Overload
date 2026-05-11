@@ -11,18 +11,20 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tailwindcss(),
-      electron([
-        {
-          entry: 'electron/main.ts',
-        },
-        {
-          entry: 'electron/preload.ts',
-          onstart(options) {
-            options.reload();
+      ...(process.env.SKIP_ELECTRON ? [] : [
+        electron([
+          {
+            entry: 'electron/main.ts',
           },
-        },
+          {
+            entry: 'electron/preload.ts',
+            onstart(options) {
+              options.reload();
+            },
+          },
+        ]),
+        renderer(),
       ]),
-      renderer(),
     ],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),

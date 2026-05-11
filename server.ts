@@ -10,6 +10,7 @@ const dbMemory = new loki("hextech_memory.json");
 const matchHistory = dbMemory.addCollection("match_history");
 
 async function startServer() {
+  process.env.SKIP_ELECTRON = "true";
   const app = express();
   const PORT = 3000;
 
