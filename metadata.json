@@ -1,0 +1,6 @@
+{
+  "name": "Remix: Hextech Overload",
+  "description": "A high-performance LoL personal coach overlay with LCU integration, real-time rune optimization, and dynamic game itemization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

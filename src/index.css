@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-transparent overflow-hidden font-sans text-slate-200 select-none;
+  }
+}
+
+.click-through {
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
+}
+
+/* Hextech Anchor */
+.hextech-anchor {
+  @apply w-12 h-12 rounded-full border-2 border-[#c8aa6e] bg-[#010a13] flex items-center justify-center shadow-[0_0_15px_rgba(200,170,110,0.4)] cursor-grab active:cursor-grabbing;
+  -webkit-app-region: drag;
+}
+
+/* Theme: Divine (Kayle) */
+.theme-divine {
+  --theme-primary: #C89B3C;
+  --theme-secondary: #FFFFFF;
+  --theme-accent: #F9A7C0;
+  --theme-bg: rgba(10, 20, 40, 0.9);
+}
+
+.divine-border {
+  border: 1px solid transparent;
+  background: linear-gradient(var(--theme-bg), var(--theme-bg)) padding-box,
+              linear-gradient(to bottom, #C89B3C, #F9A7C0) border-box;
+}
+
+/* Theme: Cosmic (ASol) */
+.theme-cosmic {
+  --theme-primary: #914FBF;
+  --theme-secondary: #60F5EE;
+  --theme-accent: #0A1428;
+  --theme-bg: rgba(10, 20, 40, 0.9);
+}
+
+.cosmic-border {
+  border: 1px solid transparent;
+  background: linear-gradient(var(--theme-bg), var(--theme-bg)) padding-box,
+              linear-gradient(to bottom, #914FBF, #60F5EE) border-box;
+}
+
+.star-field {
+  background-image: radial-gradient(white, rgba(255, 255, 255, 0.2) 2px, transparent 40px);
+  background-size: 100px 100px;
+  animation: cosmic-move 20s linear infinite;
+}
+
+@keyframes cosmic-move {
+  from { background-position: 0 0; }
+  to { background-position: 100% 100%; }
+}
+
+/* Theme: Poison (Teemo) */
+.theme-poison {
+  --theme-primary: #783F04;
+  --theme-secondary: #B91001;
+  --theme-accent: #B9B9B9;
+  --theme-bg: rgba(10, 20, 40, 0.9);
+}
+
+.poison-border {
+  border: 1px solid transparent;
+  background: linear-gradient(var(--theme-bg), var(--theme-bg)) padding-box,
+              linear-gradient(to bottom, #783F04, #B91001) border-box;
+}
+
+.bubble-glow {
+  box-shadow: inset 0 0 15px rgba(120, 63, 4, 0.4);
+  animation: bubble 4s infinite ease-in-out;
+}
+
+@keyframes bubble {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+.advice-container {
+  background-color: rgba(10, 20, 40, 0.85); /* Semi-transparent dark navy (#0A1428) */
+  @apply backdrop-blur-md rounded-md p-3 border border-[#c8aa6e]/20 transition-all duration-500;
+  animation: advice-pulse 3s infinite ease-in-out;
+}
+
+@keyframes advice-pulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(200, 170, 110, 0.1); border-color: rgba(200, 170, 110, 0.1); }
+  50% { box-shadow: 0 0 15px rgba(200, 170, 110, 0.3); border-color: rgba(200, 170, 110, 0.4); }
+}
+
+.hextech-glow {
+  box-shadow: 0 0 30px rgba(1, 10, 19, 0.8), inset 0 0 1px rgba(200, 170, 110, 0.2);
+}
+
